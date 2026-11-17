@@ -1,3 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/parcella_test
+parcella:
+  jwt:
+    secret: test-secret-test-secret-test-secret-123456
+  cors:
+    frontend-url: http://localhost:5173 # Or whatever your local url is
