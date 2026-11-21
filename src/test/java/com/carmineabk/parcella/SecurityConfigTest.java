@@ -30,26 +30,26 @@ class SecurityConfigTest {
 
     @Test
     void noTokenIs401() throws Exception {
-        mvc.perform(get("/api/v1/admin/ping")).andExpect(status().isUnauthorized());
+        mvc.perform(get("/api/v1/admin/users")).andExpect(status().isUnauthorized());
     }
 
     @Test
     void customerIs403() throws Exception {
         String token = tokens.issue(UUID.randomUUID(), Role.CUSTOMER);
-        mvc.perform(get("/api/v1/admin/ping").header("Authorization", "Bearer " + token))
+        mvc.perform(get("/api/v1/admin/users").header("Authorization", "Bearer " + token))
            .andExpect(status().isForbidden());
     }
 
     @Test
     void adminIs200() throws Exception {
         String token = tokens.issue(UUID.randomUUID(), Role.ADMIN);
-        mvc.perform(get("/api/v1/admin/ping").header("Authorization", "Bearer " + token))
+        mvc.perform(get("/api/v1/admin/users").header("Authorization", "Bearer " + token))
            .andExpect(status().isOk());
     }
 
     @Test
     void garbageTokenIs401Json() throws Exception {
-        mvc.perform(get("/api/v1/admin/ping").header("Authorization", "Bearer not-a-real-token"))
+        mvc.perform(get("/api/v1/admin/users").header("Authorization", "Bearer not-a-real-token"))
         .andExpect(status().isUnauthorized())
         .andExpect(jsonPath("$.title").value("Unauthorized"));
     }

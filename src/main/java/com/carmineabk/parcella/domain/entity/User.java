@@ -35,6 +35,9 @@ public abstract class User {
     @Column(length = 12)
     private String preferredContactNumber;
 
+    @Column(name = "avatar_image", length = 255)
+    private String avatarImage;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "registered_location_id")
     private Location registeredLocation;

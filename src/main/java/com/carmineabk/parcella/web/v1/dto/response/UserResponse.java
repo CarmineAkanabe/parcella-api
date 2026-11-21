@@ -13,10 +13,11 @@ import java.util.UUID;
 public record UserResponse(
         UUID id, String role, String fullName, String email,
         String paymentPhoneNumber, String preferredContactNumber,
-        LocationResponse registeredLocation, Instant createdAt, DriverInfo driver) {
+        LocationResponse registeredLocation, Instant createdAt, DriverInfo driver,
+        String avatarUrl) {
 
     public record DriverInfo(VerificationStatus verificationStatus, AvailabilityStatus availabilityStatus,
-                             BigDecimal averageRating, BigDecimal trustScore) {}
+                         BigDecimal averageRating, BigDecimal trustScore, String verificationNote) {}
 
     public static UserResponse from(User u) {
         Location loc = u.getRegisteredLocation();
@@ -24,11 +25,18 @@ public record UserResponse(
                 : new LocationResponse(loc.getPoint().getY(), loc.getPoint().getX(), loc.getAddress());
         DriverInfo driverInfo = null;
         if (u instanceof Driver d) {
-            driverInfo = new DriverInfo(d.getVerificationStatus(), d.getAvailabilityStatus(),
-                    d.getAverageRating(), d.getTrustScore());
+           driverInfo = new DriverInfo(d.getVerificationStatus(), d.getAvailabilityStatus(),
+                d.getAverageRating(), d.getTrustScore(), d.getVerificationNote());
         }
         return new UserResponse(u.getId(), u.getRole().name(), u.getFullName(), u.getEmail(),
                 u.getPaymentPhoneNumber(), u.getPreferredContactNumber(),
-                locationResponse, u.getCreatedAt(), driverInfo);
+                locationResponse, u.getCreatedAt(), driverInfo, avatarUrlFor(u));
+    }
+
+    /** Path relative to the API base URL; ?v= busts the browser cache when the picture changes. */
+    private static String avatarUrlFor(User u) {
+        String path = u.getAvatarImage();
+        if (path == null) return null;
+        return "/users/" + u.getId() + "/avatar?v=" + Integer.toHexString(path.hashCode());
     }
 }

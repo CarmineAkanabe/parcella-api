@@ -27,5 +27,8 @@ public class Driver extends User {
     @Column(precision = 5, scale = 2)
     private BigDecimal trustScore = BigDecimal.ZERO;
 
+    @Column(name = "verification_note", length = 500)
+    private String verificationNote;
+
     @Override public Role getRole() { return Role.DRIVER; }
 }

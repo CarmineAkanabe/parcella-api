@@ -34,3 +34,7 @@ build/
 
 ### Environment files
 .env
+/uploads
+
+### Dev
+/.docs

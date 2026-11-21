@@ -11,9 +11,15 @@ spring:
     open-in-view: false
   profiles:
     default: dev
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
 parcella:
-    jwt:
-      secret: ${JWT_SECRET}     # no default: a missing secret must stop the app
-      access-token-ttl: 60m
-    cors:
-      frontend-url: ${FRONTEND_URL}
+  jwt:
+    secret: ${JWT_SECRET}     # no default: a missing secret must stop the app
+    access-token-ttl: 60m
+  cors:
+    frontend-url: ${FRONTEND_URL}
+  upload:
+    dir: ${UPLOAD_DIR}

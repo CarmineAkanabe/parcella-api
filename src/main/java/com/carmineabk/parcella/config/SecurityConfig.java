@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/health").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/register", "/api/v1/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/payments/campay/webhook").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/users/*/avatar").permitAll()
                 .anyRequest().authenticated())
             .oauth2ResourceServer(oauth -> oauth
             .authenticationEntryPoint(handler)

@@ -6,3 +6,5 @@ parcella:
     secret: test-secret-test-secret-test-secret-123456
   cors:
     frontend-url: http://localhost:5173 # Or whatever your local url is
+  upload:
+    dir: ${java.io.tmpdir}/parcella-test-uploads

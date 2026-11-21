@@ -11,6 +11,7 @@ CREATE TABLE users (
     email                    VARCHAR(255) NOT NULL,
     password_hash            VARCHAR(100) NOT NULL,
     payment_phone_number     VARCHAR(12),
+    avatar_image             VARCHAR(255),
     preferred_contact_number VARCHAR(12),
     registered_location_id   UUID REFERENCES locations (id),
     created_at               TIMESTAMPTZ  NOT NULL DEFAULT now(),
@@ -20,6 +21,7 @@ CREATE TABLE users (
 
     -- DRIVER only
     verification_status      VARCHAR(20),
+    verification_note        VARCHAR(500),
     availability_status      VARCHAR(20),
     license_image            VARCHAR(500),
     average_rating           NUMERIC(3, 2),
@@ -45,7 +47,10 @@ CREATE TABLE users (
         CHECK (role <> 'DRIVER' OR (verification_status IS NOT NULL
                                     AND availability_status IS NOT NULL
                                     AND average_rating IS NOT NULL
-                                    AND trust_score IS NOT NULL))
+                                    AND trust_score IS NOT NULL)),
+    -- Admin driver verification for drivers only
+    CONSTRAINT users_verification_note_driver_only_chk
+        CHECK (role = 'DRIVER' OR verification_note IS NULL)
 );
 
 CREATE UNIQUE INDEX uq_users_email ON users (lower(email));
